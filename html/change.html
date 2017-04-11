@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>五子棋</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+    * {
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .box {
+        width: 800px;
+        height: 800px;
+        border: 1px solid black;
+        margin: 50px auto 0 auto;
+        position: relative;
+    }
+    
+    .box div {
+        width: 40px;
+        height: 40px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        float: left;
+        z-index: 0;
+    }
+    
+    .white {
+        width: 40px;
+        height: 40px;
+        background: white;
+        position: absolute;
+        z-index: 2;
+        border-radius: 20px;
+    }
+    
+    .black {
+        width: 40px;
+        height: 40px;
+        background: black;
+        position: absolute;
+        z-index: 2;
+        border-radius: 20px;
+    }
+    
+    .box .shad {
+        width: 800px;
+        height: 800px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+    
+    .show {
+        display: block;
+        position: absolute;
+        top: -50px;
+        color: red;
+        font-size: 45px;
+        left: 150px;
+    }
+    
+    .begin {
+        display: block;
+        position: absolute;
+        left: 350px;
+        bottom: -80px;
+        width: 100px;
+        height: 50px;
+        font-size: 25px;
+        color: #fff;
+        background: #666;
+        text-align: center;
+        line-height: 50px;
+        text-decoration: none;
+    }
+    
+    #action {
+        position: absolute;
+        width: 300px;
+        height: 100px;
+        line-height: 60px;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -50px;
+        text-align: center;
+        color: red;
+        font-weight: bold;
+        font-size: 80px;
+        opacity: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="shad"></div>
+        <p id="action">!begin</p>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <span class="show"></span>
+        <a href="javascript:;" class="begin">开始</a>
+    </div>
+    <script id="jquery_172" type="text/javascript" class="library" src="../js/jquery-1.11.3.js"></script>
+    <script type="text/javascript">
+    var arr_mode = ["free", "computer"];
+    var row = 0,
+        _flag = false,
+        color = "",
+        col = 0;
+    var w_x = [],
+        w_y = [],
+        b_x = [],
+        b_y = [],
+        w_x1 = [],
+        w_x2 = [],
+        w_x3 = [],
+        w_x4 = [],
+        w_y1 = [],
+        w_y2 = [],
+        w_y3 = [],
+        w_y4 = [],
+        b_x1 = [],
+        b_x2 = [],
+        b_x3 = [],
+        b_x4 = [],
+        b_y1 = [],
+        b_y2 = [],
+        b_y3 = [],
+        b_y4 = [];
+
+    function position(color, x, y) {
+        row = x % 40 >= 20 ? Math.ceil(x / 40) : Math.floor(x / 40);
+        col = y % 40 >= 20 ? Math.ceil(y / 40) : Math.floor(y / 40);
+        if (color == "黑") {
+            b_x.push(row);
+            b_y.push(col);
+        } else {
+            w_x.push(row);
+            w_y.push(col);
+        }
+        return [(row - 1) * 40 + 20 + 'px', (col - 1) * 40 + 20 + 'px'];
+    }
+
+    function sortNumber1(a, b) {
+        return a - b
+    }
+
+    function sortNumber2(a, b) {
+        return b - a
+    }
+
+    function clearW() {
+        w_x1 = [],
+            w_x2 = [],
+            w_x3 = [],
+            w_x4 = [],
+            w_y1 = [],
+            w_y2 = [],
+            w_y3 = [],
+            w_y4 = [];
+    }
+
+    function clearB() {
+        b_x1 = [],
+            b_x2 = [],
+            b_x3 = [],
+            b_x4 = [],
+            b_y1 = [],
+            b_y2 = [],
+            b_y3 = [],
+            b_y4 = [];
+    }
+
+    function judge(arr1, arr2) {
+        if (arr1.length < 4) return;
+        for (var i = 0; i < arr1.length; i++) {
+            if (i >= 4) {
+                if (arr1[i - 4] == arr1[i - 3] && arr1[i - 4] == arr1[i - 2] && arr1[i - 4] == arr1[i - 1] && arr1[i - 4] == arr1[i] && (arr2[i - 4] + arr2[i - 3] + arr2[i - 2] + arr2[i - 1] + arr2[i]) / 5 == arr2[i - 2] && (arr2[i - 2] + arr2[i - 1] + arr2[i]) / 3 == arr2[i - 1] && arr2[i] == arr2[i - 1] + 1) {
+                    $(".show").text("恭喜" + color + "棋获得胜利");
+                    _flag = false;
+                } else if (arr2[i - 4] == arr2[i - 3] && arr2[i - 4] == arr2[i - 2] && arr2[i - 4] == arr2[i - 1] && arr2[i - 4] == arr2[i] && (arr1[i - 4] + arr1[i - 3] + arr1[i - 2] + arr1[i - 1] + arr1[i]) / 5 == arr1[i - 2] && (arr1[i - 2] + arr1[i - 1] + arr1[i]) / 3 == arr1[i - 1] && arr1[i] == arr1[i - 1] + 1) {
+                    $(".show").text("恭喜" + color + "棋获得胜利");
+                    _flag = false;
+                } else if ((arr1[i - 4] + arr1[i - 3] + arr1[i - 2] + arr1[i - 1] + arr1[i]) / 5 == arr1[i - 2] && (arr2[i - 4] + arr2[i - 3] + arr2[i - 2] + arr2[i - 1] + arr2[i]) / 5 == arr2[i - 2] && (arr2[i] + arr2[i - 1] + arr2[i - 2]) / 3 == arr2[i - 1] && arr2[i] == arr2[i - 1] + 1) {
+                    $(".show").text("恭喜" + color + "棋获得胜利");
+                    _flag = false;
+                } else if ((arr1[i - 4] + arr1[i - 3] + arr1[i - 2] + arr1[i - 1] + arr1[i]) / 5 == arr1[i - 2] && (arr2[i - 4] + arr2[i - 3] + arr2[i - 2] + arr2[i - 1] + arr2[i]) / 5 == arr2[i - 2] && (arr2[i] + arr2[i - 1] + arr2[i - 2]) / 3 == arr2[i - 1] && arr2[i] == arr2[i - 1] - 1) {
+                    $(".show").text("恭喜" + color + "棋获得胜利");
+                    _flag = false;
+                }
+            }
+        }
+    }
+
+    function pushAll(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8, arr9, arr10) {
+        for (var i = 0; i < arr1.length; i++) {
+            if (arr2[i] == col) {
+
+                arr3.push(arr1[i]);
+                arr4.push(arr2[i]);
+            }
+            if (arr1[i] == row) {
+                arr5.push(arr1[i]);
+                arr6.push(arr2[i]);
+            }
+            if (arr1[i] - row == arr2[i] - col) {
+                arr7.push(arr1[i]);
+                arr8.push(arr2[i]);
+            }
+            if (arr1[i] - row == -(arr2[i] - col)) {
+                arr9.push(arr1[i]);
+                arr10.push(arr2[i]);
+            }
+        }
+    }
+
+    //加法
+    function accAdd(arg1, arg2) {
+        var r1, r2, m, c;
+        try {
+            r1 = arg1.toString().split(".")[1].length;
+        } catch (e) {
+            r1 = 0;
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length;
+        } catch (e) {
+            r2 = 0;
+        }
+        c = Math.abs(r1 - r2);
+        m = Math.pow(10, Math.max(r1, r2));
+        if (c > 0) {
+            var cm = Math.pow(10, c);
+            if (r1 > r2) {
+                arg1 = Number(arg1.toString().replace(".", ""));
+                arg2 = Number(arg2.toString().replace(".", "")) * cm;
+            } else {
+                arg1 = Number(arg1.toString().replace(".", "")) * cm;
+                arg2 = Number(arg2.toString().replace(".", ""));
+            }
+        } else {
+            arg1 = Number(arg1.toString().replace(".", ""));
+            arg2 = Number(arg2.toString().replace(".", ""));
+        }
+        return (arg1 + arg2) / m;
+    }
+
+    $(".begin").click(function() {
+        var box = document.getElementById("action");
+        var x = 1,
+            y = 1;
+        var time = setInterval(function() {
+            x = accAdd(x, 0.02);
+            y = accAdd(y, 0.02);
+            if (parseInt(x) == 2 && parseInt(y) == 2) {
+                clearInterval(time);
+            } else {
+                box.style.WebkitTransform = 'scale(' + x + ',' + y + ')';
+            }
+        }, 20)
+
+        $("#action").animate({
+            opacity: 1
+        }, "slow", function() {
+            $("#action").animate({
+                opacity: 0
+            }, "slow");
+        });
+        clearB();
+        clearW();
+        w_x = [],w_y = [],b_x = [],b_y = [];
+        $(".show").text("");
+        $(".white").remove();
+        $(".black").remove();
+        _flag = true;
+    })
+
+    $(".shad").click(function(e) {
+        if (_flag) {
+            //棋子定位
+            if ($(".black").size() <= $(".white").size()) {
+                color = "黑";
+                var arr_p = position(color, e.offsetX, e.offsetY);
+                $(this).append('<div class="black" style="left:' + arr_p[0] + ';top:' + arr_p[1] + '"></div>');
+                $(".black").click(function(e) {
+                    return e.stopPropagation();
+                })
+            } else {
+                color = "白";
+                var arr_p = position(color, e.offsetX, e.offsetY);
+                $(this).append('<div class="white" style="left:' + arr_p[0] + ';top:' + arr_p[1] + '"></div>');
+                $(".white").click(function(e) {
+                    return e.stopPropagation();
+                })
+
+            }
+            //把坐标放入对应的数组中
+            if (color == "黑") {
+                clearB();
+                pushAll(b_x, b_y, b_x1, b_y1, b_x2, b_y2, b_x3, b_y3, b_x4, b_y4);
+                b_x1.sort(sortNumber1);
+                b_x2.sort(sortNumber1);
+                b_x3.sort(sortNumber1);
+                b_x4.sort(sortNumber1);
+                b_y1.sort(sortNumber1);
+                b_y2.sort(sortNumber1);
+                b_y3.sort(sortNumber1);
+                b_y4.sort(sortNumber2);
+                judge(b_x1, b_y1);
+                judge(b_x2, b_y2);
+                judge(b_x3, b_y3);
+                judge(b_x4, b_y4);
+
+
+            } else {
+                clearW();
+                pushAll(w_x, w_y, w_x1, w_y1, w_x2, w_y2, w_x3, w_y3, w_x4, w_y4);
+                w_x1.sort(sortNumber1);
+                w_x2.sort(sortNumber1);
+                w_x3.sort(sortNumber1);
+                w_x4.sort(sortNumber1);
+                w_y1.sort(sortNumber1);
+                w_y2.sort(sortNumber1);
+                w_y3.sort(sortNumber1);
+                w_y4.sort(sortNumber2);
+
+                judge(w_x1, w_y1);
+                judge(w_x2, w_y2);
+                judge(w_x3, w_y3);
+                judge(w_x4, w_y4);
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

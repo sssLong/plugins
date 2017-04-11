@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>分页插件</title>
+    <meta charset='UTF-8' />
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .box-father{
+        height:32px;
+        margin-top: 200px;
+    }
+    .page-box {
+        height: 32px;
+        
+        float: left;
+        position: relative;
+        left: 50%;
+    }
+    
+    .page-center {
+        float: left;
+        position: relative;
+        right: 50%;
+        margin: auto;
+    }
+    
+    .jump-to {
+        font-size: 16px;
+        color: #333;
+        float: left;
+        height: 32px;
+        line-height: 32px;
+        margin-left: 20px;
+    }
+    
+    .jump-to input {
+        width: 30px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        color: #000;
+        text-align: center;
+    }
+    
+    .jump-to .sure-go {
+        display: inline-block;
+        width: 40px;
+        height: 24px;
+        background: red;
+        color: #fff;
+        text-align: center;
+        line-height: 24px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    #box {
+        float: left;
+        height: 32px;
+    }
+    
+    #box li {
+        border: 1px solid #ddd;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 8px;
+        color: #333;
+        background: #fff;
+        float: left;
+        list-style-type: none;
+    }
+    
+    #box #next,
+    #box #prev {
+        background: #ddd;
+        color: #fff;
+    }
+    
+    #box:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+    
+    #box .active {
+        color: #fff;
+        background: #999;
+    }
+    
+    .show1 {
+        font-size: 35px;
+        color: red;
+        text-align:center;
+        margin-top:100px; 
+    }
+    </style>
+</head>
+
+<body>
+    <div class="box-father">
+        <div class="page-box">
+            <div class="page-center">
+                <ul id='box'></ul>
+                <div class="jump-to">
+                    <span>到</span>&nbsp;
+                    <input type="text">&nbsp;<span>页</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sure-go">Go</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="now-page"></span>/<span class="all-page"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="show1"></div>
+    <script src="../js/jquery-1.11.3.js"></script>
+    <script type="text/javascript">
+    function Page(args) {
+        this.allSize = args.allSize;
+        this.size = args.size;
+        this.nowSize = args.nowSize || 1;
+        this.centerSize = Math.ceil(this.size / 2);
+        this.flag = true;
+        this.noBind = true;
+        this.data = [];
+        this.init();
+    }
+    Page.prototype = {
+        init: function() {
+            this.getData();
+            this.render();
+            this.bindEvents();
+        },
+        afterPage: function() {
+            this.flag = true;
+            //do something
+        },
+        getData: function() {
+            this.data = [];
+            if (this.allSize <= this.size) {
+                for (var i = 1; i <= this.allSize; i++) {
+                    this.data.push(i)
+                }
+            } else {
+                if (this.nowSize <= this.centerSize) {
+                    var size = this.nowSize + this.centerSize;
+                    for (var i = 1; i <= size; i++) {
+                        if (i == size - 1) {
+                            this.data.push("...")
+                            continue;
+                        }
+                        if (i == size) {
+                            this.data.push(this.allSize)
+                            continue;
+                        }
+                        this.data.push(i)
+                    }
+                } else if (this.nowSize > this.allSize - this.centerSize) {
+                    var size = this.allSize - this.nowSize + this.centerSize + 1;
+                    for (var i = 1; i <= size; i++) {
+                        if (i == 2) {
+                            this.data.push("...")
+                            continue
+                        }
+                        if (i == 1) {
+                            this.data.push(1)
+                            continue
+                        }
+                        this.data.push(this.allSize - (size - i))
+                    }
+                } else {
+                    for (var i = 1; i <= this.size + 2; i++) {
+                        if (i == 1) {
+                            this.data.push(1);
+                            continue;
+                        }
+                        if (i == 2 || i == this.size + 2 - 1) {
+                            this.data.push("...");
+                            continue;
+                        }
+                        if (i == this.size + 2) {
+                            this.data.push(this.allSize);
+                            continue;
+                        }
+                        this.data.push(this.nowSize - this.centerSize + i - 1)
+                    }
+                }
+            }
+        },
+        render: function() {
+            var html = '';
+            this.data.unshift("<");
+            this.data.push(">");
+            for (var i = 0, len = this.data.length; i < len; i++) {
+                html += '<li' + (i == 0 ? ' id="prev"' : i == len - 1 ? ' id="next"' : this.nowSize == this.data[i] ? ' class="active page"' : this.data[i] == '...' ? ' class="exp"' : ' class="page"') + '>' + this.data[i] + '</li>'
+            }
+            $("#box").html(html);
+            $(".now-page").text(this.nowSize);
+            $(".all-page").text(this.allSize);
+            $(".page-box input").val(this.nowSize)
+        },
+        bindEvents: function() {
+            var _this = this;
+
+            $("#prev").click(function() {
+                if (_this.nowSize <= 1) return;
+                if (!_this.flag) return;
+                _this.flag = false;
+                _this.nowSize--;
+                _this.init();
+                _this.afterPage();
+            })
+            $("#next").click(function() {
+                if (_this.nowSize == _this.allSize) return;
+                if (!_this.flag) return;
+                _this.flag = false
+                _this.nowSize++;
+                _this.init();
+                _this.afterPage();
+            })
+            $(".page").click(function() {
+                if (!_this.flag) return;
+                _this.flag = false;
+                _this.nowSize = +$(this).text();
+                _this.init();
+                _this.afterPage();
+            })
+
+            if (!_this.noBind) return; //跳转页面按钮不会被销毁，所以事件只绑定一次
+            $(".sure-go").click(function() {
+                var size = $('.page-box input').val();
+                if (size == _this.nowSize) return;
+                if (/^\d+$/.test(size) && size <= _this.allSize) {
+                    if (!_this.flag) return;
+                    _this.flag = false;
+                    _this.nowSize = +size;
+
+                    _this.init();
+                    _this.afterPage();
+                }
+            })
+            _this.noBind = false;
+        }
+    }
+    var test = new Page({
+        allSize: 100,
+        size: 7
+    })
+
+    function format(num, point) {
+        var j = 0;
+        var len = Math.ceil(num.toString().length / 3);
+        num = (num + '').split("").reverse();
+        for (var i = 3; i < len * 3; i += 3) {
+            num.splice(i + j, 0, ",");
+            j++;
+        }
+        num.reverse();
+        return num.join("") + (point ? point : "");
+    }
+
+    function show(num, el, point) {
+        num = +num;
+        var now = 0;
+        speed = Math.ceil(num / 100)
+        var time = setInterval(function() {
+            if (now >= num) {
+                now = num;
+                clearInterval(time);
+            } else {
+                now += speed;
+            }
+            el.text(format(now, point));
+        }, 20)
+    }
+    show(3456457123, $(".show1"), "");
+    </script>
+</body>
+
+</html>

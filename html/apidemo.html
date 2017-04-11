@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>GeolocationControl</title>
+    <style type="text/css">
+    /*<![CDATA[*/
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Times New Roman, serif
+    }
+    
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+    
+    #map_container {
+        height: 100%;
+        border: 1px solid #999;
+    }
+    
+    #box {
+        position: fixed;
+        width: 200px;
+        height: 40px;
+        left: 50%;
+        top: 50%;
+        margin-left: -100px;
+        margin-top: -20px;
+        display: none;
+        border: 1px solid #ddd;
+        font-size: 12px;
+        text-align: center;
+        z-index: 9;
+        background: #fff;
+        color: 333;
+    }
+    /*]]>*/
+    </style>
+ 
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=5c76177da614e65693308292a9e1737d"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchControl/1.4/src/SearchControl_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchControl/1.4/src/SearchControl_min.css" />
+    <link href="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="box"></div>
+</body>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+
+window.onload = function() {
+    navigator.geolocation.getCurrentPosition(translatePoint); //定位 
+};
+
+function translatePoint(position) {
+    var currentLat = position.coords.latitude;
+    var currentLon = position.coords.longitude;
+    var gpsPoint = new BMap.Point(currentLon, currentLat);
+    BMap.Convertor.translate(gpsPoint, 0, initMap); //转换坐标 
+}
+
+function initMap(point) {
+    //初始化地图 
+
+    mp = new BMap.Map("map_container", {
+        enableHighResolution: true //是否开启高清
+    });
+    mp.addControl(new BMap.NavigationControl());
+    mp.addControl(new BMap.ScaleControl());
+    mp.addControl(new BMap.OverviewMapControl());
+    mp.addOverlay(new BMap.Marker(point))
+        /*map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.centerAndZoom(point, 15);
+        map.addOverlay(new BMap.Marker(point))*/
+        //mp.centerAndZoom("深圳", 14); //初始化地图
+    mp.centerAndZoom(point, 15);
+    mp.enableInertialDragging(); //开启关系拖拽
+    mp.enableScrollWheelZoom(); //开启鼠标滚动缩放
+
+    //检索类型
+    var type = "";
+    type = LOCAL_SEARCH; //周边检索
+    //type = TRANSIT_ROUTE; //公交检索
+    //type = DRIVING_ROUTE; //驾车检索
+
+    //创建鱼骨控件
+    var navCtrl = new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT //设置鱼骨控件的位置
+    });
+    // 将鱼骨添加到地图当中
+    mp.addControl(navCtrl);
+
+    //添加路况控件
+    var ctrl = new BMapLib.TrafficControl({
+        showPanel: false //是否显示路况提示面板
+    });
+    mp.addControl(ctrl);
+    ctrl.setAnchor(BMAP_ANCHOR_TOP_RIGHT);
+
+    var myGeo = new BMap.Geocoder(); // 创建地理编码实例 
+    var box = document.getElementById("box");
+    //绑定事件
+    mp.addEventListener("touchstart", function(e) {
+        myGeo.getLocation(new BMap.Point(e.point.lng, e.point.lat), function(result) {
+            if (result) {
+                box.style.display = "block";
+                box.innerHTML = result.address;
+                //alert(result.address);
+            }
+        })
+    },false);
+}
+
+/*var mp = new BMap.Map("map_container", {
+    enableHighResolution: true //是否开启高清
+});*/
+
+//var point = new BMap.Point(110, 28.88);
+
+
+/*]]>*/
+</script>
+
+</html>

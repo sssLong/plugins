@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    *{
+    	margin:0;
+    	border:0;
+    	padding:0;
+    }
+    #container {
+        width: 1100px;
+        height: 600px;
+        position: relative;
+    }
+    
+    #father {
+        width: 500px;
+        height: 600px;
+        position: relative;
+    }
+    
+    #father img {
+        width: 500px;
+        height: 600px;
+    }
+    
+    #son {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 250px;
+        height: 300px;
+        background-color: lightblue;
+        opacity: 0.8;
+		filter:alpha(opacity=80);
+		display: none;
+    }
+    
+    #show {
+        width: 500px;
+        height: 600px;
+        overflow: hidden;
+        float: right;
+        position: relative;
+    }
+    
+    #show img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1000px;
+        height: 1200px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="show">
+            <img src="../img/img2.jpg" alt="">
+        </div>
+        <div id="father">
+            <img src="../img/img2.jpg" alt="">
+            <div id="son"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-1.4.min.js"></script>
+    <script type="text/javascript">
+    function Bigger() {
+        this.move();
+    }
+    Bigger.prototype = {
+    	//大图片移动
+        show: function(left, top) {
+            $("#show img").css({
+                "left": left,
+                "top": top
+            });
+        },
+        //阴影部分移动
+        son: function(left, top) {
+            $("#son").css({
+                "left": left,
+                "top": top
+            });
+        },
+        //阴影部分移动的范围
+        limit: function(x, y) {
+            if (x <= 0) {
+                x = 0;
+                
+            }
+            if (x >= $("#son").width()) {
+                x = $("#son").width();
+            }
+            if (y <= 0) {
+                y = 0;
+            }
+            if (y >= $("#son").height()) {
+                y = $("#son").height();
+            }
+            this.son(x + "px", y + "px");
+            this.show(-2 * x + "px", -2 * y + "px");
+        },
+        //在阴影部分绑定mousemove事件
+        move: function() {
+            var _this = this;
+            $("#father").mousemove(function(e) {
+                var e = e || Event;
+                var x = e.pageX - $("#father").offset().left - $("#son").width() / 2;
+                var y = e.pageY + $("body").scrollTop() - $("#father").offset().top - $("#son").height() / 2;
+                _this.limit(x, y);
+            })
+            $("#father").mouseout(function(){
+            	$("#son").css("display","none")
+            })
+            $("#father").mouseover(function(){
+            	$("#son").css("display","block");
+            })
+
+        }
+    }
+    var lon = new Bigger();
+    </script>
+</body>
+
+</html>

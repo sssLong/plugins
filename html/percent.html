@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>动态百分条</title>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    
+    #father {
+        width: 1000px;
+        height: 1000px;
+        margin: 0 auto;
+        position: relative;
+        background: #f5f5f5;
+    }
+    
+    #father div {
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        background-size: 1000px 1000px;
+        z-index: 0;
+    }
+    
+    .list1 {
+        background: url(../img/get1.jpg) no-repeat 0 0;
+    }
+    
+    .list2 {
+        background: url(../img/get1.jpg) no-repeat -250px 0;
+    }
+    
+    .list3 {
+        background: url(../img/get1.jpg) no-repeat -500px 0;
+    }
+    
+    .list4 {
+        background: url(../img/get1.jpg) no-repeat -750px 0;
+    }
+    
+    .list5 {
+        background: url(../img/get1.jpg) no-repeat 0 -250px;
+    }
+    
+    .list6 {
+        background: url(../img/get1.jpg) no-repeat -250px -250px;
+    }
+    
+    .list7 {
+        background: url(../img/get1.jpg) no-repeat -500px -250px;
+    }
+    
+    .list8 {
+        background: url(../img/get1.jpg) no-repeat -750px -250px;
+    }
+    
+    .list9 {
+        background: url(../img/get1.jpg) no-repeat 0px -500px;
+    }
+    
+    .list10 {
+        background: url(../img/get1.jpg) no-repeat -250px -500px;
+    }
+    
+    .list11 {
+        background: url(../img/get1.jpg) no-repeat -500px -500px;
+    }
+    
+    .list12 {
+        background: url(../img/get1.jpg) no-repeat -750px -500px;
+    }
+    
+    .list13 {
+        background: url(../img/get1.jpg) no-repeat 0 -750px;
+    }
+    
+    .list14 {
+        background: url(../img/get1.jpg) no-repeat -250px -750px;
+    }
+    
+    .list15 {
+        background: url(../img/get1.jpg) no-repeat -500px -750px;
+    }
+    
+    .list16 {
+        background: url(../img/get1.jpg) no-repeat -750px -750px;
+    }
+    
+    .position1 {
+        left: 0;
+        top: 0;
+    }
+    
+    .position2 {
+        left: 250px;
+        top: 0;
+    }
+    
+    .position3 {
+        left: 500px;
+        top: 0;
+    }
+    
+    .position4 {
+        left: 750px;
+        top: 0;
+    }
+    
+    .position5 {
+        left: 0;
+        top: 250px;
+    }
+    
+    .position6 {
+        left: 250px;
+        top: 250px;
+    }
+    
+    .position7 {
+        left: 500px;
+        top: 250px;
+    }
+    
+    .position8 {
+        left: 750px;
+        top: 250px;
+    }
+    
+    .position9 {
+        left: 0;
+        top: 500px;
+    }
+    
+    .position10 {
+        left: 250px;
+        top: 500px;
+    }
+    
+    .position11 {
+        left: 500px;
+        top: 500px;
+    }
+    
+    .position12 {
+        left: 750px;
+        top: 500px;
+    }
+    
+    .position13 {
+        left: 0;
+        top: 750px;
+    }
+    
+    .position14 {
+        left: 250px;
+        top: 750px;
+    }
+    
+    .position15 {
+        left: 500px;
+        top: 750px;
+    }
+    
+    .position16 {
+        left: 750px;
+        top: 750px;
+    }
+    
+    #shadow {
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        opacity: 0.5;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="father">
+        <div class="position1"></div>
+        <div class="position2"></div>
+        <div class="position3"></div>
+        <div class="position4"></div>
+        <div class="position5"></div>
+        <div class="position6"></div>
+        <div class="position7"></div>
+        <div class="position8"></div>
+        <div class="position9"></div>
+        <div class="position10"></div>
+        <div class="position11"></div>
+        <div class="position12"></div>
+        <div class="position13"></div>
+        <div class="position14"></div>
+        <div class="position15"></div>
+        <div class="position16"></div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-1.11.3.js"></script>
+    <script type="text/javascript">
+    var pinTu = {
+        init: function(elem) {
+            this.box = elem;
+            this.arr = [];
+            this.temp = [];
+            this.random();
+            this.addClass();
+            this.bindEvents();
+        },
+        random: function() {
+
+            for (var i = 0; i < 16; i++) {
+                this.arr.push(Math.ceil(Math.random() * 16));
+            }
+            this.remove(this.arr);
+        },
+        remove: function() {
+            for (var i = 0; i < this.arr.length; i++) {
+                var flag = true;
+                for (var j = 0; j < this.temp.length; j++) {
+                    if (this.arr[i] == this.temp[j]) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    this.temp.push(this.arr[i]);
+                }
+            }
+
+            if (this.temp.length < 16) {
+                this.arr = [];
+                this.random();
+            }
+        },
+        addClass: function() {
+
+            for (var i = 0; i < this.temp.length; i++) {
+                this.box.children().eq(i).addClass("list" + this.temp[i]);
+            }
+        },
+        bindEvents: function() {
+            var _this = this;
+            var handle = this.box.children();
+            var index = 0;
+            var $this;
+            var cla;
+            for (var i = 0; i < handle.length; i++) {
+                handle[i].pos = [i - Math.floor(i / 4) * 4, Math.floor(i / 4)];
+            }
+            handle.on("mousedown", function() {
+                $this = $(this);
+                index = $(this).index();
+                $(this).css({
+                    opacity: "0.5",
+                    zIndex: "1"
+                });
+                _this.box.bind("mousedown", test);
+
+            })
+
+            function test(e) {
+                _this.box.append('<div id="shadow"></div>');
+                $("#shadow").css("background", handle.eq(index).css("background"));
+                handle.eq(index).css("display", "none");
+                _this.box.bind("mousemove", _test);
+
+                _this.box.bind("mouseup", __test);
+            }
+
+            function _test(e) {
+                var x = e.clientX - _this.box.offset().left;
+                var y = e.clientY - _this.box.offset().top;
+                var posx = x % 250 >= 125 ? Math.ceil(x / 250) - 1 : Math.floor(x / 250);
+                var posy = y % 250 >= 125 ? Math.ceil(y / 250) - 1 : Math.floor(y / 250);
+
+                var w = 125;
+                var h = 125;
+
+                $("#shadow").css({
+                    left: x - w + "px",
+                    top: y - h + "px"
+                });
+                if (x < 0 || y < 0) return;
+
+
+                cla = $this.attr("class").match(/position\d+/g)[0];
+
+                for (var i = 0; i < handle.length; i++) {
+                    if (handle[i].pos[0] == posx && handle[i].pos[1] == posy && index != i) {
+                        handle.css("opacity", "1");
+                        handle.eq(i).css("opacity", "0.5");
+                        $this.css("opacity", "0.5");
+                        index = i;
+                    }
+                }
+            }
+
+            function __test(e) {
+                var cl = handle.eq(index).attr("class").match(/position\d+/g)[0];
+                var poschild = [],
+                    pos = [];
+                for (var i = 0; i < 2; i++) {
+                    poschild.push(handle[index].pos[i]);
+                    pos.push(handle[$this.index()].pos[i]);
+                }
+                handle[$this.index()].pos = [];
+                handle[index].pos = [];
+                handle.eq(index).addClass(cla).removeClass(cl);
+
+                $this.removeClass(cla).addClass(cl);
+                $this.show();
+                $("#shadow").remove();
+                for (var i = 0; i < 2; i++) {
+                    handle[index].pos.push(pos[i]);
+                    handle[$this.index()].pos.push(poschild[i]);
+                }
+                handle.css({
+                    zIndex: "0",
+                    opacity: "1"
+                });
+                _this.win();
+                _this.box.unbind("mousedown", test);
+                _this.box.unbind("mousemove", _test);
+                _this.box.unbind("mouseup", __test);
+            }
+
+        },
+        win: function() {
+            var flag = true;
+            var handle = this.box.children();
+            for (var i = 0; i < handle.length; i++) {
+                var a = handle.eq(i).attr("class").match(/\d+/g);
+                if (a[0] != a[1]) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                alert("your win");
+            }
+        }
+    }
+
+    pinTu.init($("#father"));
+    </script>
+</body>
+
+</html>
